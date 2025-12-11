@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#000000" />
+<link rel="icon" href="public/images/recurso-14.png" type="image/png" />
+
+<html lang="es">
+  <head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <title>Pantalla de Inicio - GoToGym</title>
+
+  <!-- SEO básico -->
+  <meta
+    name="description"
+    content="GoToGym: organiza tus entrenamientos y mejora tu experiencia en el gimnasio."
+  />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0FBFB0" />
+
+  <!-- Icono general -->
+  <link rel="icon" href="public/images/recurso-14.png" type="image/png" />
+
+  <!-- iOS: comportamiento como app -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="GoToGym" />
+  <link rel="apple-touch-icon" sizes="180x180" href="public/images/recurso-14.png" />
+
+  <!-- Fuente -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,400&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="estilos1.css" />
+</head>
+
+  <body>
+    <div class="pantalla-inicio">
+      <div class="logo-circular glow">
+        <img src="public/images/recurso-14.png" alt="Logo GoToGym" />
+      </div>
+    </div>
+
+    <script>
+      // Transición automática después de la animación
+      setTimeout(() => {
+        document.body.classList.add("fade-out");
+        setTimeout(() => {
+          window.location.href = "indexSeleccion.html";
+        }, 800); // espera de la animación fade-out
+      }, 3000); // duración del splash
+    </script>
+
+    <!-- Registro del Service Worker -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then((reg) => console.log("✅ Service Worker registrado:", reg))
+          .catch((err) => console.error("❌ Error al registrar SW:", err));
+      }
+    </script>
+  </body>
+</html>

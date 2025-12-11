@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Términos y Condiciones</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital@1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gtg-bg: #101012;
+      --gtg-teal: #0FBFB0;
+      --gtg-light: #E0E3E6;
+      --gtg-gold: #D4B46A;
+      --gtg-font: 'Poppins-SemiBoldItalic', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--gtg-bg);
+      font-family: var(--gtg-font);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(16, 16, 18, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+    }
+
+    .modal-content {
+      background-color: #101012;
+      border: 1px solid var(--gtg-teal);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 380px;
+      padding: 24px;
+      box-shadow: 0 0 12px var(--gtg-teal);
+      color: var(--gtg-light);
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+      color: var(--gtg-gold);
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      color: var(--gtg-teal);
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .close-button:hover {
+      transform: scale(1.2);
+    }
+
+    .modal-body {
+      font-size: 15px;
+      max-height: 320px;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Scroll personalizado */
+    .modal-body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+      background-color: var(--gtg-teal);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Contenedor del popup -->
+  <div class="modal-overlay" id="popupModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Términos y Condiciones</h2>
+        <a href="indexRegistrarAutorizacion.html" class="close-button">×</a>
+      </div>
+      <div class="modal-body">
+        <p>
+          Bienvenido a GoToGym. Al utilizar esta aplicación, aceptas cumplir con los siguientes términos...
+        </p>
+        <p>
+          1. El usuario acepta proporcionar información veraz durante el registro.
+        </p>
+        <p>
+          2. La aplicación está destinada únicamente para uso personal y saludable.
+        </p>
+        <p>
+          3. Los contenidos y diseños están protegidos por derechos de autor...
+        </p>
+        <!-- Puedes agregar más contenido aquí -->
+        <p>
+          Gracias por confiar en nosotros.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function cerrarModal() {
+      document.getElementById("popupModal").style.display = "none";
+    }
+  </script>
+</body>
+</html>

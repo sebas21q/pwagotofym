@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoToGym - Iniciar Sesión</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0FBFB0, #1A1A2E);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 80px;
+            font-weight: bold;
+            margin-bottom: 50px;
+            background: linear-gradient(45deg, #0FBFB0, #D4B46A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 350px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #0FBFB0;
+            font-weight: 500;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #0FBFB0;
+            box-shadow: 0 0 10px rgba(15, 191, 176, 0.3);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #0FBFB0, #1CD6CE);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 191, 176, 0.4);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            color: #D4B46A;
+            border: 2px solid #D4B46A;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background: rgba(212, 180, 106, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        /* Toast notification */
+        #toast {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0FBFB0;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: Poppins, sans-serif;
+            box-shadow: 0 0 10px #0FBFB0;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo G -->
+    <div class="logo">G</div>
+
+    <!-- Formulario de Login -->
+    <div class="form-container">
+        <div class="input-group">
+            <label class="input-label">Usuario o Email</label>
+            <input 
+                type="text" 
+                id="username" 
+                class="input-field" 
+                placeholder="usuario o correo"
+            >
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Contraseña</label>
+            <input 
+                type="password" 
+                id="password" 
+                class="input-field" 
+                placeholder="••••••••"
+            >
+        </div>
+
+        <button class="btn-login" id="btnLogin">Iniciar Sesión</button>
+
+        <div class="divider">o</div>
+
+        <button class="btn-register" onclick="window.location.href='indexRegistrar.html'">
+            Registrar
+        </button>
+    </div>
+
+    <!-- Notificación -->
+    <div id="toast"></div>
+
+    <script>
+        // 🔗 URL del backend Django
+        const API_URL = "http://127.0.0.1:8000/api/";
+
+        // Función para iniciar sesión
+        async function iniciarSesion(username, password) {
+            try {
+                console.log("🔐 Enviando credenciales:", { username, password });
+                
+                const res = await fetch(API_URL + "login/", {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const data = await res.json();
+                console.log("📦 Respuesta completa del backend:", data);
+
+                if (res.ok && data.success) {
+                    showToast("✅ Bienvenido " + data.user.username);
+                    
+                    // Guardar datos del usuario en localStorage
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    localStorage.setItem("isLoggedIn", "true");
+                    
+                    console.log("👤 Usuario guardado en localStorage:", data.user);
+                    console.log("🔄 Redirigiendo a Perfil.html...");
+
+                    // Redirigir inmediatamente
+                    window.location.href = "Perfil.html";
+                    
+                } else {
+                    const errorMsg = data.error || "Credenciales incorrectas";
+                    showToast("❌ " + errorMsg, false);
+                    console.log("❌ Error del backend:", errorMsg);
+                }
+            } catch (err) {
+                console.error("⚠ Error de conexión:", err);
+                showToast("⚠ No se pudo conectar al servidor", false);
+            }
+        }
+
+        // Toast (mensajes flotantes)
+        function showToast(message, success = true) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.style.backgroundColor = success ? "#0FBFB0" : "#d9534f";
+            toast.style.display = "block";
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 3000);
+        }
+
+        // Esperar a que la página cargue completamente
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("✅ DOM cargado - Configurando event listeners...");
+            
+            const btnLogin = document.getElementById("btnLogin");
+            const usernameInput = document.getElementById("username");
+            const passwordInput = document.getElementById("password");
+            
+            // Verificar que los elementos existen
+            if (!btnLogin) {
+                console.error("❌ No se encontró el botón btnLogin");
+                return;
+            }
+            if (!usernameInput) {
+                console.error("❌ No se encontró el input username");
+                return;
+            }
+            if (!passwordInput) {
+                console.error("❌ No se encontró el input password");
+                return;
+            }
+            
+            console.log("✅ Todos los elementos encontrados correctamente");
+
+            // Evento click en el botón de login
+            btnLogin.addEventListener("click", () => {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                if (!username || !password) {
+                    showToast("⚠ Por favor, completa todos los campos.", false);
+                    return;
+                }
+
+                iniciarSesion(username, password);
+            });
+
+            // Permitir login con Enter
+            passwordInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    btnLogin.click();
+                }
+            });
+
+            // Verificar si ya está logueado (redirigir automáticamente)
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                console.log('🔄 Usuario ya logueado, redirigiendo a Perfil...');
+                window.location.href = 'Perfil.html';
+            }
+        });
+    </script>
+</body>
+</html>

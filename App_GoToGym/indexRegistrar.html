@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro - GoToGym</title>
+    <link rel="stylesheet" href="globals3.css" />
+    <link rel="stylesheet" href="estilos4.css" />
+  </head>
+
+  <body>
+    <div class="registrar">
+      <div class="overlap">
+        <div class="text-wrapper">Nombre y Apellido</div>
+        <input
+          type="text"
+          id="username"
+          placeholder="Escribe tu nombre"
+          required
+          style="position:absolute; top:40px; left:28px; width:250px; background:transparent; border:none; color:#fff; font-size:14px; outline:none;"
+        />
+
+        <img class="line" src="public/images/Line 3.svg" />
+
+        <div class="div">Email</div>
+        <input
+          type="email"
+          id="email"
+          placeholder="correo@ejemplo.com"
+          required
+          style="position:absolute; top:118px; left:28px; width:250px; background:transparent; border:none; color:#fff; font-size:14px; outline:none;"
+        />
+
+        <img class="img" src="public/images/Line 3.svg" />
+
+        <div class="text-wrapper-2">Contraseña</div>
+        <input
+          type="password"
+          id="password"
+          placeholder="••••••••"
+          required
+          style="position:absolute; top:196px; left:28px; width:250px; background:transparent; border:none; color:#fff; font-size:14px; outline:none;"
+        />
+
+        <img class="line-2" src="public/images/Line 3.svg" />
+
+        <div class="text-wrapper-3">Plan</div>
+        <select
+          id="plan"
+          style="position:absolute; top:274px; left:28px; width:250px; background:transparent; border:none; color:#fff; font-size:14px; outline:none;"
+        >
+          <option value="Gratis">Gratis</option>
+          <option value="Premium">Premium</option>
+        </select>
+
+        <img class="line-3" src="public/images/Line 3.svg" />
+      </div>
+
+      <div class="text-wrapper-4">Registro</div>
+
+      <!-- Botón de registrar -->
+      <div class="overlap-2" id="btnRegistrar" style="cursor:pointer;">
+        <div class="rectangle"></div>
+        <div class="rectangle-2"></div>
+        <div class="text-wrapper-5">Registrar</div>
+      </div>
+    </div>
+
+    <!-- Notificación flotante -->
+    <div
+      id="toast"
+      style="display:none; position:fixed; bottom:20px; right:20px;
+              background-color:#0FBFB0; color:#fff; padding:10px 20px;
+              border-radius:8px; font-family:Poppins, sans-serif;
+              box-shadow:0 0 10px #0FBFB0;"
+    ></div>
+
+    <!-- ================== SCRIPTS ================== -->
+    <script>
+      // 🔗 URL del backend Django
+      const API_URL = "http://127.0.0.1:8000/api/";
+
+      // Función para registrar usuario
+      async function registrarUsuario(username, email, password, plan = "Gratis") {
+        try {
+          const res = await fetch(API_URL + "register/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, email, password, plan }),
+          });
+
+          const data = await res.json();
+          console.log("📦 Respuesta:", data);
+
+          if (res.ok) {
+            showToast("✅ Usuario registrado: " + data.username);
+            console.log("✅ Registro exitoso:", data);
+            setTimeout(() => {
+              window.location.href = "indexInicioDeSesion.html";
+            }, 1500);
+          } else {
+            showToast("❌ " + (data.error || "No se pudo registrar el usuario"), false);
+          }
+        } catch (err) {
+          console.error("⚠ Error de conexión:", err);
+          showToast("⚠ No se pudo conectar con el servidor", false);
+        }
+      }
+
+      // Evento click en el botón de registro
+      document.getElementById("btnRegistrar").addEventListener("click", () => {
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const plan = document.getElementById("plan").value;
+
+        if (!username || !email || !password) {
+          showToast("⚠ Por favor, completa todos los campos.", false);
+          return;
+        }
+
+        registrarUsuario(username, email, password, plan);
+      });
+
+      // Toast (mensajes flotantes)
+      function showToast(message, success = true) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.style.backgroundColor = success ? "#0FBFB0" : "#d9534f";
+        toast.style.display = "block";
+        setTimeout(() => (toast.style.display = "none"), 3000);
+      }
+    </script>
+  </body>
+</html>

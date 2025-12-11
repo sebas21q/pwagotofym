@@ -1,0 +1,3 @@
+INFO 2025-11-09 14:52:36,308 autoreload 15340 13648 Watching for file changes with StatReloader
+INFO 2025-11-09 14:53:02,245 autoreload 11376 15992 Watching for file changes with StatReloader
+INFO 2025-11-09 14:53:32,957 autoreload 11376 15992 C:\Users\sebas\Desktop\Goto\backend_gotogym\backend_gotogym\settings.py changed, reloading.
