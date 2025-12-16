@@ -68,3 +68,12 @@ TEMPLATES = [
         },
     },
 ]
+CORS_ALLOWED_ORIGINS = [
+    "https://moonlit-axolotl-97627d.netlify.app",  # tu PWA en Netlify
+    "http://127.0.0.1:5500",                      # Live Server en tu PC
+]
+
+# Orígenes de confianza para CSRF (POST desde otros dominios)
+CSRF_TRUSTED_ORIGINS = [
+    "https://pwagotofym.onrender.com",            # tu backend en Render
+]
